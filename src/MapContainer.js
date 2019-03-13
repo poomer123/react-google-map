@@ -21,7 +21,12 @@ export class MapContainer extends Component {
                     lat: 13.7248936, 
                     lng: 100.4930261
                 }}
+                center={{
+                    lat: 13.7248936, 
+                    lng: 100.4930261
+                }}
                 onClick={() => this.onMapClicked()}
+                onDragend={() => this.centerMoved()}
             >
                 <Marker 
                     onClick={() => this.onMarkerClick()}
@@ -43,6 +48,14 @@ export class MapContainer extends Component {
 
     onMarkerClick() {
         console.log('onMarkerClick')
+    }
+
+    onInfoWindowClose() {
+        console.log('onInfoWindowClose')
+    }
+
+    centerMoved() {
+        console.log('onDragend')
     }
 }
 
