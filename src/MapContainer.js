@@ -27,6 +27,7 @@ export class MapContainer extends Component {
                 }}
                 onClick={this.onMapClicked}
                 onDragend={this.centerMoved}
+                mapTypeControl={false}
             >
                 <Marker 
                     onClick={this.onMarkerClick}
@@ -47,35 +48,37 @@ export class MapContainer extends Component {
         )
     }
 
-    onMapClicked = (props) => {
+    onMapClicked = (mapProps, map, clickEvent) => {
         if (this.state.showingInfoWindow) {
             this.setState({
                 showingInfoWindow: false,
                 activeMarker: null
             })
-        }else{
-            console.log(props)
         }
+        console.log(mapProps, map, clickEvent)
+        const lat = clickEvent.latLng.lat()
+        const lng = clickEvent.latLng.lng()
+        console.log(lat, lng)
     }
 
-    onMarkerClick = (props, marker, e) => {
-        console.log('onMarkerClick', props, marker)
+    onMarkerClick = (mapProps, marker, e) => {
+        console.log('onMarkerClick', mapProps, marker)
         this.setState({
-            selectedPlace: props,
+            selectedPlace: mapProps,
             activeMarker: marker,
             showingInfoWindow: true
         })
     }
 
-    onInfoWindowClose = () => {
-        console.log('onInfoWindowClose', )
+    onInfoWindowClose = (mapProps) => {
+        console.log('onInfoWindowClose', mapProps)
         this.setState({
             showingInfoWindow: false
         })
     }
 
-    centerMoved = (value) => {
-        console.log('onDragend', value)
+    centerMoved = (mapProps) => {
+        console.log('onDragend', mapProps)
     }
 
 }
