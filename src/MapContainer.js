@@ -5,7 +5,8 @@ export class MapContainer extends Component {
     state = {
         selectedPlace: {},
         showingInfoWindow: false,
-        activeMarker: {}
+        activeMarker: {},
+        address: ''
     }
     render(){
         const style = {
@@ -13,40 +14,44 @@ export class MapContainer extends Component {
             height: '450px'
         }
         return (
-            <Map 
-                zoom={15}
-                google={this.props.google}
-                style={style}
-                initialCenter={{
-                    lat: 13.7248936, 
-                    lng: 100.4930261
-                }}
-                center={{
-                    lat: 13.7248936, 
-                    lng: 100.4930261
-                }}
-                onClick={this.onMapClicked}
-                onDragend={this.centerMoved}
-                mapTypeControl={false}
-            >
-                <Marker 
-                    id={1}
-                    onClick={this.onMarkerClick}
-                    draggable={true}
-                    onDragend={this.moveMarker}
-                    name={'This location name'}
-                />
-                    <InfoWindow
-                        visible={this.state.showingInfoWindow}
-                        marker={this.state.activeMarker}
-                        onClose={this.onInfoWindowClose}
-                    >
-                    <div>
-                        <h3>{this.state.selectedPlace.name}</h3>
-                        <p>The Detail</p>
-                    </div>
-                </InfoWindow>
-            </Map>
+            <div>
+                <input type="text" onChange={(e) => this.inputChange(e)} value={this.state.address} ref="search" />
+                <button type="submit" onClick={this.onSearch}>Search</button>
+                <Map 
+                    zoom={15}
+                    google={this.props.google}
+                    style={style}
+                    initialCenter={{
+                        lat: 13.7248936, 
+                        lng: 100.4930261
+                    }}
+                    center={{
+                        lat: 13.7248936, 
+                        lng: 100.4930261
+                    }}
+                    onClick={this.onMapClicked}
+                    onDragend={this.centerMoved}
+                    mapTypeControl={false}
+                >
+                    <Marker 
+                        id={1}
+                        onClick={this.onMarkerClick}
+                        draggable={true}
+                        onDragend={this.moveMarker}
+                        name={'This location name'}
+                    />
+                        <InfoWindow
+                            visible={this.state.showingInfoWindow}
+                            marker={this.state.activeMarker}
+                            onClose={this.onInfoWindowClose}
+                        >
+                        <div>
+                            <h3>{this.state.selectedPlace.name}</h3>
+                            <p>The Detail</p>
+                        </div>
+                    </InfoWindow>
+                </Map>
+            </div>
         )
     }
 
@@ -89,6 +94,27 @@ export class MapContainer extends Component {
         const lng = latLng.lng()
         console.log('moveMarker', mapProps, marker, event)
         console.log(lat, lng)
+    }
+
+    inputChange(e) {
+        this.setState({
+            address: e.target.value
+        })
+    }
+
+    onSearch = () => {
+        var searchBox = new this.props.google.maps.places.SearchBox(this.refs.search)
+
+        searchBox.addListener('places_changed', function() {
+            console.log('places changed')
+            var places = searchBox.getPlaces()
+            console.log('lat', places[0].geometry.location.lat())
+            console.log('lng', places[0].geometry.location.lng())
+        })
+    }
+
+    onPlacesChanged = () => {
+        console.log('onPlacesChanged')
     }
 
 }

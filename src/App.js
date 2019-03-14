@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import SearchContainer from './SearchContainer'
 import MapContainer from './MapContainer'
 
 class App extends Component {
@@ -9,7 +8,6 @@ class App extends Component {
                 <header className="App-header">
                     <h1>React Google Map</h1>
                 </header>
-                <SearchContainer />
                 <p></p>
                 <MapContainer />
             </div>
