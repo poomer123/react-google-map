@@ -30,15 +30,17 @@ export class MapContainer extends Component {
                 mapTypeControl={false}
             >
                 <Marker 
+                    id={1}
                     onClick={this.onMarkerClick}
+                    draggable={true}
+                    onDragend={this.moveMarker}
                     name={'This location name'}
                 />
-                <InfoWindow
-                    visible={this.state.showingInfoWindow}
-                    marker={this.state.activeMarker}
-                    onClose={this.onInfoWindowClose}
-                    test={'555'}
-                >
+                    <InfoWindow
+                        visible={this.state.showingInfoWindow}
+                        marker={this.state.activeMarker}
+                        onClose={this.onInfoWindowClose}
+                    >
                     <div>
                         <h3>{this.state.selectedPlace.name}</h3>
                         <p>The Detail</p>
@@ -70,8 +72,8 @@ export class MapContainer extends Component {
         })
     }
 
-    onInfoWindowClose = (mapProps) => {
-        console.log('onInfoWindowClose', mapProps)
+    onInfoWindowClose = () => {
+        console.log('onInfoWindowClose')
         this.setState({
             showingInfoWindow: false
         })
@@ -79,6 +81,14 @@ export class MapContainer extends Component {
 
     centerMoved = (mapProps) => {
         console.log('onDragend', mapProps)
+    }
+
+    moveMarker = (mapProps, marker, event) => {
+        const { latLng } = event
+        const lat = latLng.lat()
+        const lng = latLng.lng()
+        console.log('moveMarker', mapProps, marker, event)
+        console.log(lat, lng)
     }
 
 }
